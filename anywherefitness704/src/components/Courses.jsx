@@ -32,10 +32,13 @@ export default function Courses() {
               aria-controls="panel1bh-content"
               id="panel1bh-header"
             >
-            <p>{course.name}</p>
-          </AccordionSummary>
-
-            <StyledButton>See course page</StyledButton>
+              <p>{course.name}</p>
+            </AccordionSummary>
+            <StyledAccordianDetails>
+              <h5>{course.location}</h5>
+              <p>{course.description}</p>
+              <StyledButton>See course page</StyledButton>
+            </StyledAccordianDetails>
           </StyledAccordion>
         ))}
       </StyledSection>
@@ -51,6 +54,9 @@ const StyledSection = styled.section`
 `
 const StyledAccordion = styled(Accordion)`
   width: 60%;
+`
+const StyledAccordianDetails = styled(AccordionDetails)`
+  flex-direction: column;
 `
 const StyledButton = styled(Button)`
     &:hover {
