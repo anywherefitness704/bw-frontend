@@ -2,6 +2,9 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 
 import Dashboard from './components/Dashboard'
+import Courses from './components/Courses'
+import Instructors from './components/Instructors'
+import Locations from './components/Locations'
 import Registration from './components/Registration'
 import Login from './components/Login'
 
@@ -26,24 +29,31 @@ function App() {
           </nav>
 
           <Switch>
-          <Route path="/dashboard" render={() => (
-            <div className='app-container'>
-            <p>Dashboard.js placeholder</p>
-            <Dashboard />
-          </div>
-          )} />
-          <Route path="/registration" render={() => (
-            <div className='app-container'>
-            <p>Registration.js placeholder</p>
-            <Registration/>
-          </div>
-          )} />
-          <Route path="/login" render={() => (
-            <div className='app-container'>
-            <p>Login.js placeholder</p>
-            <Login />
-          </div>
-          )} />
+            <Route path="/dashboard" render={() => (
+              <Dashboard />
+            )} />
+            <Route path="/courses" render={() => (
+              <Courses />
+            )} />
+            <Route path="/instructors" render={() => (
+              <Instructors />
+            )} />
+            <Route path="/locations" render={() => (
+              <Locations />
+            )} />
+
+            <Route path="/registration" render={() => (
+              <div className='app-container'>
+                <p>Registration.js placeholder</p>
+                <Registration/>
+              </div>
+            )} />
+            <Route path="/login" render={() => (
+              <div className='app-container'>
+                <p>Login.js placeholder</p>
+                <Login />
+              </div>
+            )} />
           </Switch>
         </header>
       </div>
