@@ -27,10 +27,7 @@ function App() {
 
           <Switch>
           <Route path="/dashboard" render={() => (
-            <div className='app-container'>
-              <p>Dashboard.js placeholder</p>
-              <Dashboard />
-            </div>
+            <Dashboard />
           )} />
           <Route path="/registration" render={() => (
             <div className='app-container'>
