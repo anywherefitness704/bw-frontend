@@ -28,21 +28,21 @@ function App() {
           <Switch>
           <Route path="/dashboard" render={() => (
             <div className='app-container'>
-            <p>Dashboard.js placeholder</p>
-            <Dashboard />
-          </div>
+              <p>Dashboard.js placeholder</p>
+              <Dashboard />
+            </div>
           )} />
           <Route path="/registration" render={() => (
             <div className='app-container'>
-            <p>Registration.js placeholder</p>
-            <Registration/>
-          </div>
+              <p>Registration.js placeholder</p>
+              <Registration/>
+            </div>
           )} />
           <Route path="/login" render={() => (
             <div className='app-container'>
-            <p>Login.js placeholder</p>
-            <Login />
-          </div>
+              <p>Login.js placeholder</p>
+              <Login />
+            </div>
           )} />
           </Switch>
         </header>
