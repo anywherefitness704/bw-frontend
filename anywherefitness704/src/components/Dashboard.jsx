@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from "styled-components"
 import { backgroundColor } from '../Styles'
-import Card from '@material-ui/core/Card';
+import { Card, Button } from '@material-ui/core';
 
 export default function Dashboard() {
 
@@ -10,17 +10,20 @@ export default function Dashboard() {
         <>
         <h2>Dashboard</h2>
         <StyledSection>
-            <StyledCard>
-            <h3>Courses</h3>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quidem dolor aliquid illo ab recusandae, voluptates ipsam necessitatibus sapiente officia magni expedita, ea eius voluptate explicabo magnam quaerat, quis doloremque.</p>
+            <StyledCard elevation={3}>
+                <h3>Courses</h3>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quidem dolor aliquid illo ab recusandae, voluptates ipsam necessitatibus sapiente officia magni expedita, ea eius voluptate explicabo magnam quaerat, quis doloremque.</p>
+                <StyledButton variant="outlined" color="primary">See courses</StyledButton>
             </StyledCard>
-            <StyledCard>
-            <h3>Courses</h3>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quidem dolor aliquid illo ab recusandae, voluptates ipsam necessitatibus sapiente officia magni expedita, ea eius voluptate explicabo magnam quaerat, quis doloremque.</p>
+            <StyledCard elevation={3}>
+                <h3>Instructors</h3>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quidem dolor aliquid illo ab recusandae, voluptates ipsam necessitatibus sapiente officia magni expedita, ea eius voluptate explicabo magnam quaerat, quis doloremque.</p>
+                <StyledButton variant="outlined" color="primary">See instructors</StyledButton>
             </StyledCard>
-            <StyledCard>
-            <h3>Courses</h3>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quidem dolor aliquid illo ab recusandae, voluptates ipsam necessitatibus sapiente officia magni expedita, ea eius voluptate explicabo magnam quaerat, quis doloremque.</p>
+            <StyledCard elevation={3}>
+                <h3>Locations</h3>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quidem dolor aliquid illo ab recusandae, voluptates ipsam necessitatibus sapiente officia magni expedita, ea eius voluptate explicabo magnam quaerat, quis doloremque.</p>
+                <StyledButton variant="outlined" color="primary">See locations</StyledButton>
             </StyledCard>
         </StyledSection>
         </>
@@ -35,4 +38,9 @@ const StyledSection = styled.section`
 const StyledCard = styled(Card)`
   width: 25%;
   padding: 1%;
+`
+const StyledButton = styled(Button)`
+    &:hover {
+        box-shadow: 1px 1px 3px black;
+    }
 `
