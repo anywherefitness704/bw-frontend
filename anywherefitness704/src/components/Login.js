@@ -3,6 +3,9 @@ import React from 'react';
 //using React Hook Form for validation
 import { useForm } from 'react-hook-form'
 
+//import material ui styles
+import { Button, TextField}  from '@material-ui/core/'
+
 export default function Login() {
     // properties the hook returns
     const { register, handleSubmit, errors } = useForm();
@@ -17,7 +20,7 @@ export default function Login() {
         <div className="login-form">
         <form onSubmit={handleSubmit(onSubmit)}>
           <label htmlFor="inputEmail">E-mail:&nbsp;&nbsp;
-          <input
+          <TextField
             type="email"
             id="inputEmail"
             name="email"
@@ -33,7 +36,7 @@ export default function Login() {
           </label>
             <br />
           <label htmlFor="inputPassword">Password:&nbsp;&nbsp;
-          <input
+          <TextField
             type="password"
             id="inputPassword"
             name="password"
@@ -43,7 +46,7 @@ export default function Login() {
           {errors.password && <p className="error">{errors.password.message}</p>}
           </label>
             <br />
-          <button type="submit">Login</button>
+          <Button type="submit">Login</Button>
         </form>
       </div>
     )
