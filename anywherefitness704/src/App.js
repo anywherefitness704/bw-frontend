@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 
 import Dashboard from './components/Dashboard'
@@ -7,10 +7,13 @@ import Instructors from './components/Instructors'
 import Locations from './components/Locations'
 import Registration from './components/Registration'
 import Login from './components/Login'
+import Alerts from './components/Alerts'
 
 import './App.css';
 
 function App() {
+  const [errorMessage, updateErrorMessage] = useState(null);
+  
   return (
     <Router>
     <div className = "App">
@@ -27,7 +30,6 @@ function App() {
               <Link to="/dashboard" name="dashboard">My Dashboard</Link>
             </nav>
           </nav>
-
           <Switch>
             <Route path="/dashboard" render={() => (
               <Dashboard />
@@ -44,22 +46,19 @@ function App() {
 
             <Route path="/registration" render={() => (
               <div className='app-container'>
-                <p>Registration.js placeholder</p>
-                <Registration/>
+                <Registration showError={updateErrorMessage} />
               </div>
             )} />
             <Route path="/login" render={() => (
               <div className='app-container'>
-                <p>Login.js placeholder</p>
-                <Login />
+                <Login showError={updateErrorMessage} />
               </div>
             )} />
           </Switch>
         </header>
+        <span><Alerts errorMessage={errorMessage} hideError={updateErrorMessage}/></span>
       </div>
     </Router>
-    
-   
   );
 }
 
