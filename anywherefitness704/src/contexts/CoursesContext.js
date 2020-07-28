@@ -1,4 +1,6 @@
-export const courseListData = [
+import { createContext } from "react";
+
+const courseListData = [
   {
     name: "Advanced Stretches for Breathing",
     location: "5345 4015 W, Taylorsville, UT 84129",
@@ -52,3 +54,5 @@ export const courseListData = [
     id: 6,
   },
 ];
+
+export const CoursesContext = createContext(courseListData);
