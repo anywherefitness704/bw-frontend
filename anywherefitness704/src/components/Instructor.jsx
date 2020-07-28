@@ -1,7 +1,7 @@
 import React from "react";
 
 import styled from "styled-components";
-import { Button, Paper } from "@material-ui/core";
+import { Paper } from "@material-ui/core";
 
 export default function Instructor(props) {
   const { instructor } = props;
