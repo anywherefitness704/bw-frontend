@@ -1,6 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 
+import { UserContext } from "./contexts/UserContext";
+
 import Dashboard from "./components/Dashboard";
 import Courses from "./components/Courses";
 import Instructors from "./components/Instructors";

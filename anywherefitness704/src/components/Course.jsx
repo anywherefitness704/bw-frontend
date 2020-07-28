@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
+
+import { UserContext } from "../contexts/UserContext";
 
 import styled from "styled-components";
 import {
@@ -10,6 +12,7 @@ import {
 import { ExpandMore } from "@material-ui/icons";
 
 export default function Course(props) {
+  const user = useContext(UserContext);
   const { course } = props;
 
   return (
@@ -25,6 +28,16 @@ export default function Course(props) {
         <h5>{course.location}</h5>
         <p>{course.description}</p>
         <StyledButton>See course page</StyledButton>
+        {user.userType === "instructor" && (
+          <>
+            <Button color="primary" variant="contained">
+              Edit
+            </Button>
+            <Button color="secondary" variant="contained">
+              Delete
+            </Button>
+          </>
+        )}
       </StyledAccordianDetails>
     </StyledAccordion>
   );
