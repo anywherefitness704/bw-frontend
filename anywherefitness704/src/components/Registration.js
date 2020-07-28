@@ -132,7 +132,7 @@ function Registration (props) {
                     inputRef={register({
                          required: "You must specify a password" })}
                   /> 
-                {/* <Controller as={TextField} name="confirmPassword" control={control} defaultValue="" type="password" 
+                <Controller as={TextField} name="confirmPassword" control={control} defaultValue="" type="password" 
                     variant="outlined"
                     required
                     fullWidth
@@ -143,7 +143,7 @@ function Registration (props) {
                     autoFocus
                    inputRef={register({
                          required: "You must specify a password" })} 
-                /> */}
+                />
                 <br />
                 <InputLabel>What are you looking for?</InputLabel>
                 <Select name="userType" defaultValue='' type="select"
@@ -154,6 +154,7 @@ function Registration (props) {
                     fullWidth
                     value={state.selectValue}
                     onChange={handleChange}
+                    inputRef={register}
                     >
                     <MenuItem selected value={'Select One'}>Select One</MenuItem>
                     <MenuItem value={'student'}>I'm interested in taking classes.</MenuItem>
@@ -173,7 +174,7 @@ function Registration (props) {
             </form>
             <div className="registration-footer">
                 <span>Already have an account? </span>
-                <Link to="/registration">Login here</Link>
+                <Link to="/login" name="login">Login here</Link>
             </div>
         </Container>
     )
