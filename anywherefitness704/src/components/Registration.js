@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { withRouter, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { BASE_URL } from '../constants/index';
 import { useForm, Controller } from 'react-hook-form'
 
@@ -180,4 +180,4 @@ function Registration (props) {
     )
 }
 
-export default withRouter (Registration);
+export default Registration;
