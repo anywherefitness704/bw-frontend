@@ -1,187 +1,157 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { Link } from "react-router-dom";
-import { BASE_URL } from '../constants/index';
-import { useForm, Controller } from 'react-hook-form'
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom'
 
-//styles from material-ui
-import { makeStyles } from '@material-ui/core/styles'; //to be able to pull in styled-components
-import CssBaseline from '@material-ui/core/CssBaseline'; //shortcut on CSS
-import Container from "@material-ui/core/Container";
-import Button from '@material-ui/core/Button'
+//importing styles from Material UI
 import TextField from '@material-ui/core/TextField';
-import Select from '@material-ui/core/Select'
-import MenuItem from '@material-ui/core/MenuItem'
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
+import Button from '@material-ui/core/Button';
+import CardHeader from '@material-ui/core/CardHeader';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel'
 
 
-// function to add our own styles to material-ui theme
-const useStyles = makeStyles((theme) => ({
-    form: {
-      width: '100%', // Fix IE 11 issue.
-      marginTop: theme.spacing(1),
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    container: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      width: 400,
+      margin: `${theme.spacing(0)} auto`
     },
-    submit: {
-      margin: theme.spacing(3, 0, 2),
+    loginBtn: {
+      marginTop: theme.spacing(2),
+      flexGrow: 1,
+      background: '#1C0C26',
+      border: '#1C0C26',
+      color: "#FFF"
     },
-  }));
-
-function Registration (props) {
-    //Setting Use States
-    const [state , setState] = useState({
-        email : "",
-        password : "",
-        confirmPassword: "",
-        userType: "",
-        successMessage: null
-    })
-
-
-    //React Hook Forms
-    const { handleSubmit, register, control } = useForm();
-    
-    //define variable to use custom styles in material-ui
-    const classes = useStyles();
-    
-    //FORM ACTIONS
-    const handleChange = (e) => {
-        const {id , value} = e.target   
-        setState(prevState => ({
-            ...prevState,
-            [id] : value
-        }))
-    }
-    const sendDetailsToServer = () => {
-        if(state.email.length && state.password.length && state.userType.length) {
-            props.showError(null);
-            const payload={
-                "email":state.email,
-                "password":state.password,
-                "userType":state.userType,
-            }
-            axios.post(BASE_URL+'register', payload)
-                .then(function (response) {
-                    if(response.data.code === 200){
-                        setState(prevState => ({
-                            ...prevState,
-                            'successMessage' : 'Registration successful. Redirecting to home page..'
-                        }))
-                        //sends user to dashboard upon successful login
-                        redirectToHome();
-                        props.showError(null)
-                    } else{
-                        props.showError("Some error ocurred");
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });    
-        } else {
-            props.showError('Please enter valid email and password')    
-        }
-        
-    }
-    const redirectToHome = () => {
-        props.history.push('/dashboard');
+    header: {
+      textAlign: 'center',
+      background: '#1C0C26',
+      color: '#FFF'
+    },
+    card: {
+      marginTop: theme.spacing(10)
     }
 
-    const handleSubmitClick = (e) => {
-        e.preventDefault();
-        if(state.password === state.confirmPassword) {
-            sendDetailsToServer()    
-        } else {
-            props.showError('Passwords do not match');
-        }
+  }),
+);
+
+
+const Registration = () => {
+  const classes = useStyles();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [userType, setUserType] = useState(null);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [helperText, setHelperText] = useState('');
+  const [error, setError] = useState(false);
+  const history = useHistory()
+  const routeToDashboard = () => {
+    history.push('/dashboard')
+}
+  useEffect(() => {
+    if (email.trim() && password.trim() && userType) {
+      setIsButtonDisabled(false);
+    } else {
+      setIsButtonDisabled(true);
     }
-    function onSubmit(data) {
-        console.log("Data submitted: ", data);
-      }
-    return(
-        <Container className="registration-container" maxWidth="sm">
-            <CssBaseline />
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <div className="registration-form">
-                <h3>Input your information below to get started</h3>
-                <Controller as={TextField} name="email" control={control} defaultValue="" type="email" 
-                       variant="outlined"
-                       required
-                       fullWidth
-                       id="inputEmail"
-                       label="Email Address"
-                       value={state.email}
-                       onChange={handleChange}
-                       autoFocus
-                       inputRef={register({
-                           required: "Enter your e-mail",
-                           pattern: {
-                           value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                           message: "Enter a valid e-mail address",
-                           },
-                       })} 
-                />
-                <br />
-                <br />
-                <Controller as={TextField} name="inputPassword" control={control} defaultValue="" type="password" 
-                    variant="outlined"
-                    required
-                    fullWidth
-                    id="inputPassword"
-                    label="Create Password"
-                    value={state.password}
-                    onChange={handleChange}
-                    autoFocus
-                    inputRef={register({
-                         required: "You must specify a password" })}
-                  /> 
-                  <br />
-                  <br />
-                <Controller as={TextField} name="confirmPassword" control={control} defaultValue="" type="password" 
-                    variant="outlined"
-                    required
-                    fullWidth
-                    id="confirmPassword"
-                    label="Confirm Password"
-                    value={state.confirmPassword}
-                    onChange={handleChange}
-                    autoFocus
-                   inputRef={register({
-                         required: "You must specify a password" })} 
-                />
-                <br />
-                <br />
-                <InputLabel>What are you looking for?</InputLabel>
-                <Select name="userType" defaultValue='' type="select"
-                    id="userType"
-                    label="User Type"
-                    variant="outlined"
-                    required
-                    fullWidth
-                    value={state.selectValue}
-                    onChange={handleChange}
-                    inputRef={register}
-                    >
-                    <MenuItem selected value={'Select One'}>Select One</MenuItem>
+  }, [email, password, userType]);
+
+  const handleSignUp = () => {
+    if (email === 'abc@email.com' && password === 'password') {
+      setError(false);
+      alert(`Registered Successfully with the email ${email} and password ${password} and your user type is: ${userType}`);
+      routeToDashboard();
+    } else {
+      setError(true);
+      setHelperText('Invalid email or password')
+    }
+  };
+
+  const handleKeyPress = (e:any) => {
+    if (e.keyCode === 13 || e.which === 13) {
+      isButtonDisabled || handleSignUp();
+    }
+  };
+
+
+  return (
+    <React.Fragment>
+      <form className={classes.container} noValidate autoComplete="off">
+        <Card className={classes.card}>
+          <CardHeader className={classes.header} title="Sign Up" />
+          <CardContent>
+            <div>
+                <h3> Create Your Account to Get Started.</h3>
+              <TextField
+                variant="outlined"
+                required
+                error={error}
+                fullWidth
+                autoFocus
+                id="email"
+                type="email"
+                label="Enter Your Email Address"
+                placeholder="Email"
+                margin="normal"
+                onChange={(e)=>setEmail(e.target.value)}
+                onKeyPress={(e)=>handleKeyPress(e)}
+              />
+              <TextField
+                variant="outlined"
+                required
+                error={error}
+                fullWidth
+                autoFocus
+                id="password"
+                type="password"
+                label="Choose A Password"
+                placeholder="Password"
+                margin="normal"
+                helperText={helperText}
+                onChange={(e)=>setPassword(e.target.value)}
+                onKeyPress={(e)=>handleKeyPress(e)}
+              />
+              <InputLabel>Are you looking to teach or take gym classes?</InputLabel>
+              <Select
+                required
+                error={error}
+                fullWidth
+                autoFocus
+                id="userType"
+                type="userType"
+                label="userType"
+                placeholder="User Type"
+                helperText={helperText}
+                onChange={(e)=>setUserType(e.target.value)}
+                onKeyPress={(e)=>handleKeyPress(e)}>
+                    <MenuItem selected value={''}>Select One</MenuItem>
                     <MenuItem value={'student'}>I'm interested in taking classes.</MenuItem>
                     <MenuItem value={'instructor'}>I'm interested in teaching classes.</MenuItem>
                 </Select>
-                </div>
-                <Button 
-                    type="submit" 
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    className={classes.submit}
-                    onClick={handleSubmitClick}
-                >
-                Register
-                </Button>
-            </form>
-            <div className="registration-footer">
-                <span>Already have an account? </span>
-                <Link to="/login" name="login">Login here</Link>
             </div>
-        </Container>
-    )
+          </CardContent>
+          <CardActions>
+            <Button
+              variant="contained"
+              size="large"
+              color="secondary"
+              className={classes.loginBtn}
+              onClick={()=>handleSignUp()}
+              disabled={isButtonDisabled}>
+              Register Now
+            </Button>
+          </CardActions>
+        </Card>
+      </form>
+    </React.Fragment>
+  );
 }
 
 export default Registration;
+

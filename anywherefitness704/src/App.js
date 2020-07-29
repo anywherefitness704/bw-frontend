@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 import { UserContext } from "./contexts/UserContext";
 
+//COMPONENTS
 import Dashboard from "./components/Dashboard";
 import Courses from "./components/Courses";
 import Instructors from "./components/Instructors";
@@ -9,6 +10,8 @@ import Locations from "./components/Locations";
 import Registration from "./components/Registration";
 import Login from "./components/Login";
 import Alerts from './components/Alerts'
+
+//STYLES
 import { Button } from "@material-ui/core";
 import styled from "styled-components";
 
