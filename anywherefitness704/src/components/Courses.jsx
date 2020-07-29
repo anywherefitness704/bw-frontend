@@ -9,6 +9,7 @@ import styled from "styled-components";
 
 export default function Courses() {
   const courseListData = useContext(CoursesContext);
+  const [state, setState] = useState(courseListData);
 
   useEffect(() => {
     axiosWithAuth()
@@ -16,6 +17,9 @@ export default function Courses() {
       .then((res) => {
         console.log(res.data.data);
 
+        setState({
+          data: res.data.data,
+        });
         courseListData.data = res.data.data;
       })
       .catch((err) => {
@@ -27,8 +31,10 @@ export default function Courses() {
     <>
       <h2>Courses</h2>
       <StyledSection>
-        {courseListData.data &&
-          courseListData.data.map((course) => <Course course={course} />)}
+        {state.data &&
+          state.data.map((course) => (
+            <Course key={course.id} course={course} />
+          ))}
       </StyledSection>
     </>
   );

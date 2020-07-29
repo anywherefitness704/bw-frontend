@@ -13,7 +13,8 @@ import { ExpandMore } from "@material-ui/icons";
 
 export default function Course(props) {
   const user = useContext(UserContext);
-  const { course } = props;
+  const { name, location, type } = props.course;
+  console.log(user);
 
   return (
     <StyledAccordion elevation={3}>
@@ -22,11 +23,11 @@ export default function Course(props) {
         aria-controls="panel1bh-content"
         id="panel1bh-header"
       >
-        <p>{course.name}</p>
+        <p>{name}</p>
       </AccordionSummary>
       <StyledAccordianDetails>
-        <h5>{course.location}</h5>
-        <p>{course.description}</p>
+        <h5>{location}</h5>
+        <p>{type}</p>
         <StyledButton>See course page</StyledButton>
         {user.userType === "instructor" && (
           <>

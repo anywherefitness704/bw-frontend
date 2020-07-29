@@ -184,7 +184,8 @@ export default function Login(props) {
       .post(BASE_URL + "/api/auth/login", payload)
       .then((res) => {
         console.log("Login successful bro!", res);
-        userData.userType = res.data.role;
+        // userData.userType = res.data.role;
+        userData.setUserType(res.data.role);
         console.log(userData);
         localStorage.setItem("token", res.data.token);
         history.push("/");
