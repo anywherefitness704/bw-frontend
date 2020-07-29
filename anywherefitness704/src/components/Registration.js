@@ -120,6 +120,7 @@ function Registration (props) {
                        })} 
                 />
                 <br />
+                <br />
                 <Controller as={TextField} name="inputPassword" control={control} defaultValue="" type="password" 
                     variant="outlined"
                     required
@@ -132,6 +133,8 @@ function Registration (props) {
                     inputRef={register({
                          required: "You must specify a password" })}
                   /> 
+                  <br />
+                  <br />
                 <Controller as={TextField} name="confirmPassword" control={control} defaultValue="" type="password" 
                     variant="outlined"
                     required
@@ -144,6 +147,7 @@ function Registration (props) {
                    inputRef={register({
                          required: "You must specify a password" })} 
                 />
+                <br />
                 <br />
                 <InputLabel>What are you looking for?</InputLabel>
                 <Select name="userType" defaultValue='' type="select"

@@ -70,7 +70,7 @@ export default function Login (props) {
                     props.showError("email and password do not match");
                 }
                 else{
-                    props.showError("Email does not exists");
+                    props.showError("Email does not exist");
                 }
             })
             .catch(function (error) {
