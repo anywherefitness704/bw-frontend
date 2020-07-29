@@ -1,2 +1,2 @@
-export const BASE_URL = 'https://reqres.in/api/users'
-export const API_KEY = 'xyz'
+export const BASE_URL = "https://anytime-fitness.herokuapp.com";
+export const API_KEY = "xyz";
