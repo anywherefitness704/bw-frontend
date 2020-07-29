@@ -1,7 +1,7 @@
 import { createContext } from "react";
 
 const dummyAuthData = {
-  username: "Johnny",
-  userType: "instructors",
+  username: "",
+  userType: "",
 };
 export const UserContext = createContext(dummyAuthData);

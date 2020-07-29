@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import { Link, useHistory } from "react-router-dom";
 import { BASE_URL } from "../constants/index";
 //using React Hook Form for validation
 import { useForm, Controller } from "react-hook-form";
+import { UserContext } from "../contexts/UserContext";
 
 //importing material-ui design styles
 import { makeStyles } from "@material-ui/core/styles"; //to be able to pull in styled-components
@@ -163,6 +164,7 @@ const initialFormState = {
 export default function Login(props) {
   const [state, setState] = useState(initialFormState);
   const history = useHistory();
+  const userData = useContext(UserContext);
 
   const handleChanges = (e) => {
     console.log(e.target.value);
@@ -181,7 +183,9 @@ export default function Login(props) {
     axios
       .post(BASE_URL + "/api/auth/login", payload)
       .then((res) => {
-        console.log("Login successful bro!");
+        console.log("Login successful bro!", res);
+        userData.userType = res.data.role;
+        console.log(userData);
         localStorage.setItem("token", res.data.token);
         history.push("/");
       })
