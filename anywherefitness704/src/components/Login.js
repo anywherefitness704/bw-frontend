@@ -183,7 +183,7 @@ export default function Login(props) {
       .then((res) => {
         console.log("Login successful bro!");
         localStorage.setItem("token", res.data.token);
-        history.push("/dashboard");
+        history.push("/");
       })
       .catch((err) => console.error(err));
   };
