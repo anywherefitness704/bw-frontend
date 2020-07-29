@@ -1,6 +1,5 @@
-import React from "react";
-import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
-
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 import { UserContext } from "./contexts/UserContext";
 
 import Dashboard from "./components/Dashboard";
@@ -9,12 +8,15 @@ import Instructors from "./components/Instructors";
 import Locations from "./components/Locations";
 import Registration from "./components/Registration";
 import Login from "./components/Login";
+import Alerts from './components/Alerts'
 import { Button } from "@material-ui/core";
 import styled from "styled-components";
 
 import "./App.css";
 
 function App() {
+  const [errorMessage, updateErrorMessage] = useState(null);
+  
   return (
     <Router>
       <div className="App">
@@ -39,33 +41,27 @@ function App() {
               </StyledLink>
             </nav>
           </nav>
-
           <Switch>
             <Route path="/dashboard" render={() => <Dashboard />} />
             <Route path="/courses" render={() => <Courses />} />
             <Route path="/instructors" render={() => <Instructors />} />
             <Route path="/locations" render={() => <Locations />} />
 
-            <Route
-              path="/registration"
-              render={() => (
-                <div className="app-container">
-                  <p>Registration.js placeholder</p>
-                  <Registration />
-                </div>
-              )}
-            />
-            <Route
-              path="/login"
-              render={() => (
-                <div className="app-container">
-                  <p>Login.js placeholder</p>
-                  <Login />
-                </div>
-              )}
-            />
+
+            <Route path="/registration" render={() => (
+              <div className='app-container'>
+                <Registration showError={updateErrorMessage} />
+              </div>
+            )} />
+            <Route path="/login" render={() => (
+              <div className='app-container'>
+                <Login showError={updateErrorMessage} />
+              </div>
+            )} />
+
           </Switch>
         </header>
+        <span><Alerts errorMessage={errorMessage} hideError={updateErrorMessage}/></span>
       </div>
     </Router>
   );
