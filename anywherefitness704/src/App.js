@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 import { UserContext } from "./contexts/UserContext";
 
@@ -9,20 +9,21 @@ import Instructors from "./components/Instructors";
 import Locations from "./components/Locations";
 import Registration from "./components/Registration";
 import Login from "./components/Login";
-import Alerts from './components/Alerts'
+
 
 //STYLES
 import { Button } from "@material-ui/core";
+import CssBaseline from "@material-ui/core/CssBaseline"
 import styled from "styled-components";
 
 import "./App.css";
 
 function App() {
-  const [errorMessage, updateErrorMessage] = useState(null);
   
   return (
     <Router>
       <div className="App">
+        <CssBaseline />
         <header>
           <nav className="main-nav">
             <div>
@@ -53,18 +54,17 @@ function App() {
 
             <Route path="/registration" render={() => (
               <div className='app-container'>
-                <Registration showError={updateErrorMessage} />
+                <Registration />
               </div>
             )} />
             <Route path="/login" render={() => (
               <div className='app-container'>
-                <Login showError={updateErrorMessage} />
+                <Login  />
               </div>
             )} />
 
           </Switch>
         </header>
-        <span><Alerts errorMessage={errorMessage} hideError={updateErrorMessage}/></span>
       </div>
     </Router>
   );

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom';
+import axios from 'axios';
 
 //importing styles from Material UI
 import TextField from '@material-ui/core/TextField';
@@ -12,6 +13,8 @@ import CardHeader from '@material-ui/core/CardHeader';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel'
+import CssBaseline from '@material-ui/core/CssBaseline';
+import styled from 'styled-components'
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -63,16 +66,27 @@ const Registration = () => {
     }
   }, [email, password, userType]);
 
-  const handleSignUp = () => {
-    if (email === 'abc@email.com' && password === 'password') {
+  const handleSignUp = (evt) => {
+    const newUser = {
+      email:email.trim(),
+      password: password.trim(),
+      userType: userType,
+    }
+    if (!newUser.email|| !newUser.password || !newUser.userType ) {
+      setError(true);
+      setHelperText('Invalid email or password')
+    }  else {
+      axios.post('https://reqres.in/api/users', { newUser })
+      .then(res=>{
+        console.log(res);
+        console.log(res.data);
+      })
       setError(false);
       alert(`Registered Successfully with the email ${email} and password ${password} and your user type is: ${userType}`);
       routeToDashboard(); //sends user to dashboard after successful signup
-    } else {
-      setError(true);
-      setHelperText('Invalid email or password')
     }
-  };
+  }
+    
   //handles if user presses enter key instead of clicking on submit
   const handleKeyPress = (e:any) => {
     if (e.keyCode === 13 || e.which === 13) {
@@ -83,6 +97,7 @@ const Registration = () => {
 
   return (
     <React.Fragment>
+        <CssBaseline />
       <form className={classes.container} noValidate autoComplete="off">
         <Card className={classes.card}>
           <CardHeader className={classes.header} title="Sign Up" />
@@ -119,6 +134,7 @@ const Registration = () => {
                 onKeyPress={(e)=>handleKeyPress(e)}
               />
               <InputLabel>Are you looking to teach or take gym classes?</InputLabel>
+              <br />
               <Select
                 required
                 error={error}
@@ -150,9 +166,17 @@ const Registration = () => {
           </CardActions>
         </Card>
       </form>
+      <StyledDiv className="registration-footer">
+        <span>Already have an account? </span>
+        <Link to="/login" name="login">Login here</Link>
+        </StyledDiv>
     </React.Fragment>
   );
 }
 
 export default Registration;
 
+const StyledDiv = styled.div`
+  padding: 1rem;
+  text-decoration: none;
+`;

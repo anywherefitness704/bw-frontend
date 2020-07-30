@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom'
 
 //importing styles from Material UI
 import TextField from '@material-ui/core/TextField';
@@ -10,6 +10,7 @@ import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import CardHeader from '@material-ui/core/CardHeader';
 import CssBaseline from '@material-ui/core/CssBaseline'; //shortcut on CSS
+import styled from 'styled-components'
 
 
 
@@ -133,9 +134,17 @@ const Login = () => {
           </CardActions>
         </Card>
       </form>
+      <StyledDiv className="registerMessage">
+        <span>Dont have an account? </span>
+        <Link to="/registration">Register</Link>
+      </StyledDiv>
     </React.Fragment>
   );
 }
 
 export default Login;
 
+const StyledDiv = styled.div`
+  padding: 1rem;
+  text-decoration: none;
+`;
