@@ -50,6 +50,7 @@ const Registration = () => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [helperText, setHelperText] = useState('');
   const [error, setError] = useState(false);
+  //uses URL history to push to dashboard upon successful signup
   const history = useHistory()
   const routeToDashboard = () => {
     history.push('/dashboard')
@@ -66,13 +67,13 @@ const Registration = () => {
     if (email === 'abc@email.com' && password === 'password') {
       setError(false);
       alert(`Registered Successfully with the email ${email} and password ${password} and your user type is: ${userType}`);
-      routeToDashboard();
+      routeToDashboard(); //sends user to dashboard after successful signup
     } else {
       setError(true);
       setHelperText('Invalid email or password')
     }
   };
-
+  //handles if user presses enter key instead of clicking on submit
   const handleKeyPress = (e:any) => {
     if (e.keyCode === 13 || e.which === 13) {
       isButtonDisabled || handleSignUp();

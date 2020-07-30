@@ -73,7 +73,7 @@ const Login = () => {
       }
     };
   
-
+  //handles if user presses enter key instead of clicking on submit
   const handleKeyPress = (e:any) => {
     if (e.keyCode === 13 || e.which === 13) {
       isButtonDisabled || handleLogin();
