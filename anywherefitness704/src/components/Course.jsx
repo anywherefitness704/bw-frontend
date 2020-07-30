@@ -105,9 +105,13 @@ export default function Course(props) {
               {state.edit && <>Save Changes</>}
             </Button>
 
-            {/* <Button color="secondary" variant="contained">
+            <Button
+              color="secondary"
+              variant="contained"
+              onClick={props.deleteCourse}
+            >
               Delete
-            </Button> */}
+            </Button>
           </>
         )}
       </StyledAccordianDetails>

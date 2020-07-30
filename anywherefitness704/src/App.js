@@ -7,6 +7,7 @@ import { UserContext } from "./contexts/UserContext";
 
 import Dashboard from "./components/Dashboard";
 import Courses from "./components/Courses";
+import AddCourse from "./components/AddCourse";
 import Instructors from "./components/Instructors";
 import Locations from "./components/Locations";
 import Registration from "./components/Registration";
@@ -65,7 +66,8 @@ function App() {
                 </nav>
                 <Switch>
                   <Route exact path="/" render={() => <Dashboard />} />
-                  <Route path="/courses" render={() => <Courses />} />
+                  <Route exact path="/courses" render={() => <Courses />} />
+                  <Route path="/courses/add" render={() => <AddCourse />} />
                   <Route path="/instructors" render={() => <Instructors />} />
                   <Route path="/locations" render={() => <Locations />} />
 
