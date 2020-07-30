@@ -1,24 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { courseListData } from "../resources/dummyData";
+import React, { useEffect, useState, useContext } from "react";
+import { CoursesContext } from "../contexts/CoursesContext";
 
 import Course from "../components/Course";
 import styled from "styled-components";
 
-const initialCourseList = [];
-
 export default function Courses() {
-  const [courseList, setCourseList] = useState(initialCourseList);
-
-  useEffect(() => {
-    // throw network stuff here later
-    setCourseList(courseListData);
-  }, []);
+  const courseListData = useContext(CoursesContext);
 
   return (
     <>
       <h2>Courses</h2>
       <StyledSection>
-        {courseList && courseList.map((course) => <Course course={course} />)}
+        {courseListData &&
+          courseListData.map((course) => <Course course={course} />)}
       </StyledSection>
     </>
   );
