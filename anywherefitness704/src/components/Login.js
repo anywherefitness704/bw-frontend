@@ -70,7 +70,7 @@ const Login = () => {
         routeToDashboard(); //sends user to dashboard after auth
       } else {
         setError(true);
-        setHelperText('Invalid email or password')
+        setHelperText('Email and Password credentials do not match our system. Please try again.')
       }
     };
   

@@ -49,6 +49,7 @@ const Registration = () => {
   const classes = useStyles();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [userType, setUserType] = useState(null);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [helperText, setHelperText] = useState('');
@@ -59,22 +60,26 @@ const Registration = () => {
     history.push('/dashboard')
 }
   useEffect(() => {
-    if (email.trim() && password.trim() && userType) {
+    if (email.trim() && password.trim() && confirmPassword.trim() && userType) {
       setIsButtonDisabled(false);
     } else {
       setIsButtonDisabled(true);
     }
-  }, [email, password, userType]);
+  }, [email, password, confirmPassword, userType]);
 
   const handleSignUp = (evt) => {
     const newUser = {
       email:email.trim(),
       password: password.trim(),
+      confirmPassword: confirmPassword.trim(),
       userType: userType,
     }
-    if (!newUser.email|| !newUser.password || !newUser.userType ) {
+    if (!newUser.email|| !newUser.password || !newUser.confirmPassword || !newUser.userType ) {
       setError(true);
       setHelperText('Invalid email or password')
+    } else if(newUser.password !== newUser.confirmPassword){
+      setError(true);
+      setHelperText('Passwords must match')
     }  else {
       axios.post('https://reqres.in/api/users', { newUser })
       .then(res=>{
@@ -131,6 +136,21 @@ const Registration = () => {
                 margin="normal"
                 helperText={helperText}
                 onChange={(e)=>setPassword(e.target.value)}
+                onKeyPress={(e)=>handleKeyPress(e)}
+              />
+              <TextField
+                variant="outlined"
+                required
+                error={error}
+                fullWidth
+                autoFocus
+                id="confirmPassword"
+                type="password"
+                label="Confirm Password"
+                placeholder="Confirm Password"
+                margin="normal"
+                helperText={helperText}
+                onChange={(e)=>setConfirmPassword(e.target.value)}
                 onKeyPress={(e)=>handleKeyPress(e)}
               />
               <InputLabel>Are you looking to teach or take gym classes?</InputLabel>
