@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory, Link } from 'react-router-dom'
+import axios from 'axios';
 
 //importing styles from Material UI
 import TextField from '@material-ui/core/TextField';
@@ -49,6 +50,7 @@ const Login = () => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [helperText, setHelperText] = useState('');
   const [error, setError] = useState(false);
+  const [quotes, setQuotes] = useState('')
   //uses URL history to push to dashboard upon successful auth
   const history = useHistory()
   const routeToDashboard = () => {
@@ -81,10 +83,30 @@ const Login = () => {
     }
   };
 
+  //example of get request for mvp
+  const getKanye = () => {
+    axios.get('https://api.kanye.rest/?format=text')
+      .then(response => {
+        console.log(response)
+        setQuotes(response.data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
+  useEffect(() => getKanye(), [])
+
   return (
     <React.Fragment>
         <CssBaseline />
       <form className={classes.container} noValidate autoComplete="off">
+        <Card className={classes.card}>
+          <CardHeader className={classes.header} title="Kanye Says:" />
+          <StyledQuoteDiv>
+          <span><StyledImg src="https://www.pngkit.com/png/detail/17-172367_kanye-west-png-pic-kanye-west-face-png.png" alt="Kanye Face"/></span>
+          <StyledBlockQuote>{quotes}</StyledBlockQuote>
+          </StyledQuoteDiv>
+        </Card>
         <Card className={classes.card}>
           <CardHeader className={classes.header} title="Welcome Back!" />
           <CardContent>
@@ -147,4 +169,26 @@ export default Login;
 const StyledDiv = styled.div`
   padding: 1rem;
   text-decoration: none;
+`;
+
+
+const StyledImg = styled.img`
+  width: 75%;
+  height: auto;
+  text-decoration: none;
+`;
+
+
+
+
+const StyledQuoteDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: space-evenly;
+`;
+
+const StyledBlockQuote = styled.blockquote`
+  width: 100%;
+  font-style: italic;
+  font-size: 1rem;
 `;
