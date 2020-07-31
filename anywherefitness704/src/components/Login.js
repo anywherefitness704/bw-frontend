@@ -1,159 +1,205 @@
-import React, { useState } from 'react';
-import axios from 'axios'
-import { Link } from 'react-router-dom'
-import { BASE_URL } from '../constants/index'
-//using React Hook Form for validation
-import { useForm, Controller } from 'react-hook-form'
+import React, { useState, useEffect } from 'react';
+import { useHistory, Link } from 'react-router-dom'
+import axios from 'axios';
+import { useForm } from 'react-hook-form';
 
-
-//importing material-ui design styles
-import { makeStyles } from '@material-ui/core/styles'; //to be able to pull in styled-components
+//importing styles from Material UI
+import TextField from '@material-ui/core/TextField';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
+import Button from '@material-ui/core/Button';
+import CardHeader from '@material-ui/core/CardHeader';
 import CssBaseline from '@material-ui/core/CssBaseline'; //shortcut on CSS
-import Container from "@material-ui/core/Container";
-import Button from '@material-ui/core/Button'
-import TextField from '@material-ui/core/TextField'
-import Checkbox from '@material-ui/core/Checkbox';
-import { FormControlLabel } from '@material-ui/core';
+import styled from 'styled-components'
 
 
-const useStyles = makeStyles((theme) => ({
-    form: {
-      width: '100%', // Fix IE 11 issue.
-      marginTop: theme.spacing(1),
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    container: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      width: 400,
+      margin: `${theme.spacing(0)} auto`
     },
-    submit: {
-      margin: theme.spacing(3, 0, 2),
+    loginBtn: {
+      marginTop: theme.spacing(2),
+      flexGrow: 1,
+      background: '#679B9B',
+      border: '#679B9B',
+      color: '#FFF'
     },
-  }));
-
-  //FORM ACTIONS
-  
-
-export default function Login (props) {
-    // properties react hook form returns
-    const { handleSubmit, register, errors, control } = useForm();
-
-    //define variable to use styles
-    const classes = useStyles();
-
-    const [state , setState] = useState({
-        email : "",
-        password : "",
-        successMessage: null
-    })
-    const handleChange = (e) => {
-        const {id , value} = e.target   
-        setState(prevState => ({
-            ...prevState,
-            [id] : value
-        }))
+    header: {
+      textAlign: 'center',
+      background: '#679B9B',
+      color: '#FFF'
+    },
+    card: {
+      marginTop: theme.spacing(10)
     }
 
-    const handleSubmitClick = (e) => {
-        alert('Login Details Submitted: ' + state.email + state.password);
-        e.preventDefault();
-        const payload={
-            "email":state.email,
-            "password":state.password,
-        }
-        axios.post(BASE_URL+'login', payload)
-            .then(function (response) {
-                if(response.data.code === 200){
-                    setState(prevState => ({
-                        ...prevState,
-                        'successMessage' : 'Login successful. Redirecting to home page..'
-                    }))
-                    console.log(response.data)
-                    props.showError(null)
-                }
-                else if(response.data.code === 204){
-                    props.showError("email and password do not match");
-                }
-                else{
-                    props.showError("Email does not exists");
-                }
-            })
-            .catch(function (error) {
-                console.log('This is a login error' + error);
-            });
-    }
-
-    // used to test for handling the form submission and get the filled data.
-    // function onSubmit(data) {
-    //     console.log("Data submitted: ", data);
-    //   }
+  }),
+);
 
 
-    return (
-        <Container maxWidth="xs">
-        <CssBaseline />
-        <form className={classes.form} noValidate onSubmit={handleSubmit((data) => alert(JSON.stringify(data)))}>
-        <Controller as={TextField} control={control} defaultValue=""
-            variant="outlined"
-            margin="normal"
-            type="email"
-            required
-            fullWidth
-            id="inputEmail"
-            label="Email Address"
-            value={state.email || ''}
-            name="email"
-            onChange={handleChange}
-            autoFocus
-            inputRef={register({
-                required: "Enter your e-mail",
-                pattern: {
-                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                message: "Enter a valid e-mail address",
-                },
-            })}
-            />
-          <br />
-          <div>
-          {errors.email && <p className="error">{errors.email.message}</p>}
-          </div>
-            <br />
-            <Controller as={TextField} control={control} defaultValue=""
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            type="password"
-            name="password"
-            id="inputPassword"
-            label="Password"
-            value={state.password || ''}
-            onChange={handleChange}
-            autoFocus
-            inputRef={register({
-                required: "You must specify a password" })}
-          />
-          <br />
-          <FormControlLabel 
-          control={<Checkbox inputRef={register} name="remember" color="primary" defaultValue={false} />}
-          label ="Remember me"
-          />
-          <div>
-          {errors.password && <p className="error">{errors.password.message}</p>}
-          </div>
-            <br />
-          <Button 
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={handleSubmitClick}
-            >
-                Login
-                </Button>
-        </form>
-        <div className="alert-success" style={{display: state.successMessage ? 'block' : 'none' }} role="alert">
-                {state.successMessage}
-        </div>
-        <div className="registerMessage">
-                <span>Dont have an account? </span>
-                <Link to="/registration">Register</Link>
-            </div>
-        </Container>
-    )
+const Login = () => {
+  const classes = useStyles();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [helperText, setHelperText] = useState('');
+  const [error, setError] = useState(false);
+  const [quotes, setQuotes] = useState('')
+  const { register } = useForm();
+  //uses URL history to push to dashboard upon successful auth
+  const history = useHistory()
+  const routeToDashboard = () => {
+    history.push('/dashboard')
 }
+
+  useEffect(() => {
+    if (email.trim() && password.trim()) {
+      setIsButtonDisabled(false);
+    } else {
+      setIsButtonDisabled(true);
+    }
+  }, [email, password]);
+
+  const handleLogin = () => {
+    if (email === 'abc@email.com' && password === 'password') {
+        setError(false);
+        alert(`You logged in successfully with the email ${email} and password ${password}`);
+        routeToDashboard(); //sends user to dashboard after auth
+      } else {
+        setError(true);
+        setHelperText('Email and Password credentials do not match our system. Please try again.')
+      }
+    };
+  
+  //handles if user presses enter key instead of clicking on submit
+  const handleKeyPress = (e:any) => {
+    if (e.keyCode === 13 || e.which === 13) {
+      isButtonDisabled || handleLogin();
+    }
+  };
+
+  //example of get request for mvp
+  const getKanye = () => {
+    axios.get('https://api.kanye.rest/?format=text')
+      .then(response => {
+        console.log(response)
+        setQuotes(response.data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
+  useEffect(() => getKanye(), [])
+
+  return (
+    <React.Fragment>
+        <CssBaseline />
+      <form className={classes.container} noValidate autoComplete="off">
+        <Card className={classes.card}>
+          <CardHeader className={classes.header} title="Kanye Says:" />
+          <StyledQuoteDiv>
+          <span><StyledImg src="https://www.pngkit.com/png/detail/17-172367_kanye-west-png-pic-kanye-west-face-png.png" alt="Kanye Face"/></span>
+          <StyledBlockQuote>{quotes}</StyledBlockQuote>
+          </StyledQuoteDiv>
+        </Card>
+        <Card className={classes.card}>
+          <CardHeader className={classes.header} title="Welcome Back!" />
+          <CardContent>
+            <div>
+            <h3> Enter Your Details Below</h3>
+              <TextField
+                variant="outlined"
+                required
+                error={error}
+                fullWidth
+                autoFocus
+                id="email"
+                type="email"
+                label="Enter Your Email"
+                placeholder="Email"
+                margin="normal"
+                onChange={(e)=>setEmail(e.target.value)}
+                onKeyPress={(e)=>handleKeyPress(e)}
+                inputRef={register({
+                  required: "Enter your e-mail",
+                  pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                  message: "Enter a valid e-mail address",
+                  },
+              })}
+              />
+              <TextField
+                variant="outlined"
+                required
+                error={error}
+                fullWidth
+                autoFocus
+                id="password"
+                type="password"
+                label="Enter Your Password"
+                placeholder="Password"
+                margin="normal"
+                helperText={helperText}
+                onChange={(e)=>setPassword(e.target.value)}
+                onKeyPress={(e)=>handleKeyPress(e)}
+                inputRef={register({
+                  required: "You must specify a password" })}
+              />
+            </div>
+          </CardContent>
+          <CardActions>
+            <Button
+              variant="contained"
+              size="large"
+              color="secondary"
+              className={classes.loginBtn}
+              onClick={()=>handleLogin()}
+              disabled={isButtonDisabled}>
+              Login
+            </Button>
+          </CardActions>
+        </Card>
+      </form>
+      <StyledDiv className="registerMessage">
+        <span>Dont have an account? </span>
+        <Link to="/registration">Register</Link>
+      </StyledDiv>
+    </React.Fragment>
+  );
+}
+
+export default Login;
+
+const StyledDiv = styled.div`
+  padding: 1rem;
+  text-decoration: none;
+`;
+
+
+const StyledImg = styled.img`
+  width: 75%;
+  height: auto;
+  text-decoration: none;
+`;
+
+
+
+
+const StyledQuoteDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: space-evenly;
+`;
+
+const StyledBlockQuote = styled.blockquote`
+  width: 100%;
+  font-style: italic;
+  font-size: 1rem;
+`;
