@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import axios from 'axios';
+import { useForm } from 'react-hook-form'
+
 
 //importing styles from Material UI
 import TextField from '@material-ui/core/TextField';
@@ -54,6 +56,7 @@ const Registration = () => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [helperText, setHelperText] = useState('');
   const [error, setError] = useState(false);
+  const { register } = useForm();
   //uses URL history to push to dashboard upon successful signup
   const history = useHistory()
   const routeToDashboard = () => {
@@ -137,6 +140,13 @@ const Registration = () => {
                 helperText={helperText}
                 onChange={(e)=>setPassword(e.target.value)}
                 onKeyPress={(e)=>handleKeyPress(e)}
+                inputRef={register({
+                  required: "Enter your e-mail",
+                  pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                  message: "Enter a valid e-mail address",
+                  },
+              })}
               />
               <TextField
                 variant="outlined"
@@ -152,6 +162,8 @@ const Registration = () => {
                 helperText={helperText}
                 onChange={(e)=>setConfirmPassword(e.target.value)}
                 onKeyPress={(e)=>handleKeyPress(e)}
+                inputRef={register({
+                  required: "You must specify a password" })}
               />
               <InputLabel>Are you looking to teach or take gym classes?</InputLabel>
               <br />

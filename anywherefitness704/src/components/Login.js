@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory, Link } from 'react-router-dom'
 import axios from 'axios';
+import { useForm } from 'react-hook-form';
 
 //importing styles from Material UI
 import TextField from '@material-ui/core/TextField';
@@ -51,6 +52,7 @@ const Login = () => {
   const [helperText, setHelperText] = useState('');
   const [error, setError] = useState(false);
   const [quotes, setQuotes] = useState('')
+  const { register } = useForm();
   //uses URL history to push to dashboard upon successful auth
   const history = useHistory()
   const routeToDashboard = () => {
@@ -125,6 +127,13 @@ const Login = () => {
                 margin="normal"
                 onChange={(e)=>setEmail(e.target.value)}
                 onKeyPress={(e)=>handleKeyPress(e)}
+                inputRef={register({
+                  required: "Enter your e-mail",
+                  pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                  message: "Enter a valid e-mail address",
+                  },
+              })}
               />
               <TextField
                 variant="outlined"
@@ -140,6 +149,8 @@ const Login = () => {
                 helperText={helperText}
                 onChange={(e)=>setPassword(e.target.value)}
                 onKeyPress={(e)=>handleKeyPress(e)}
+                inputRef={register({
+                  required: "You must specify a password" })}
               />
             </div>
           </CardContent>
