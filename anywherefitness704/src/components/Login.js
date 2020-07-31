@@ -13,7 +13,7 @@ const initialFormState = {
   password: "",
 };
 
-export default function Login() {
+export default function Login(props) {
   const [state, setState] = useState(initialFormState);
   const history = useHistory();
 
@@ -39,6 +39,7 @@ export default function Login() {
         localStorage.setItem("userType", res.data.role);
 
         localStorage.setItem("token", res.data.token);
+        props.setTokenState(res.data.token);
         history.push("/");
       })
       .catch((err) => console.error(err));

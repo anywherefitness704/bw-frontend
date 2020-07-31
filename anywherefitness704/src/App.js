@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 
 import { InstructorsContext } from "./contexts/InstructorsContext";
@@ -33,6 +33,11 @@ const initialInstructorListData = [
 
 function App() {
   const [errorMessage, updateErrorMessage] = useState(null);
+  const [tokenState, setTokenState] = useState();
+
+  useEffect(() => {
+    setTokenState(localStorage.getItem("token"));
+  }, []);
 
   return (
     <Router>
@@ -83,7 +88,10 @@ function App() {
                     path="/login"
                     render={() => (
                       <div className="app-container">
-                        <Login showError={updateErrorMessage} />
+                        <Login
+                          setTokenState={setTokenState}
+                          showError={updateErrorMessage}
+                        />
                       </div>
                     )}
                   />
